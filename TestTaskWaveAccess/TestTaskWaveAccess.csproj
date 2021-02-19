@@ -4,4 +4,13 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="bootstrap" Version="4.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Movie\" />
+    <Folder Include="Views\User\" />
+  </ItemGroup>
+
 </Project>

@@ -1,8 +1,30 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using TestTaskWaveAccess.Models
+@model IEnumerable<User> 
+@{
+    ViewData["Title"] = "Test Task WaveAccess";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Users</h1>
+    
+    <table class="table">
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Registration Date</th>
+            <th>Bio</th>
+        </tr>
+        @foreach (User user in Model)
+        {
+            <tr>
+                <td>@user.Id</td>
+                <td>@user.Name</td>
+                <td>@user.Age</td>
+                <td>@user.RegistrationDate</td>
+                <td>@user.Bio</td>
+            </tr>
+        }
+
+    </table>
 </div>
