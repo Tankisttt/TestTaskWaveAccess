@@ -1,0 +1,30 @@
+﻿@using TestTaskWaveAccess.Models
+@model IEnumerable<Movie>
+@{
+    ViewData["Title"] = "Movies";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Movies</h1>
+
+    <table class="table">
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Release year</th>
+            <th>Description</th>
+            <th>Rating</th>
+        </tr>
+        @foreach (Movie movie in Model)
+        {
+            <tr>
+                <td>@movie.Id</td>
+                <td>@movie.Title</td>
+                <td>@movie.ReleaseYear</td>
+                <td>@movie.Description</td>
+                <td>@movie.Rating</td>
+            </tr>
+        }
+
+    </table>
+</div>
