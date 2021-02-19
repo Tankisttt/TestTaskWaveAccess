@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace TestTaskWaveAccess.Models
 {
@@ -14,9 +11,7 @@ namespace TestTaskWaveAccess.Models
 		[Required]
 		public string Name { get; set; }
 		public DateTime RegistrationDate { get; set; }
-		/// <summary>
-		/// IMDB contains that field
-		/// </summary>
+		public string Email { get; set; }
 		public string Bio { get; set; }
 	}
 }
