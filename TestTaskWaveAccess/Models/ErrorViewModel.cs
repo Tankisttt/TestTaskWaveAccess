@@ -1,5 +1,3 @@
-using System;
-
 namespace TestTaskWaveAccess.Models
 {
 	public class ErrorViewModel

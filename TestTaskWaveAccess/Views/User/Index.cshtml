@@ -16,20 +16,7 @@
             <th>Bio</th>
         </tr>
 
-        @foreach (User user in Model)
-        {
-            <tr>
-                <td>@user.Id</td>
-                <td>@user.Name</td>
-                <td>@user.Age</td>
-                <td>
-                    @string.Format("{0}.{1}.{2}", user.RegistrationDate.Day,
-                                                  user.RegistrationDate.Month,
-                                                  user.RegistrationDate.Year)
-                            </td>
-                <td>@user.Bio</td>
-            </tr>
-        }
+
 
     </table>
 </div>
