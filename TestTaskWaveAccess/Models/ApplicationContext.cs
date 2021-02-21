@@ -21,8 +21,14 @@ namespace TestTaskWaveAccess.Models
             Database.EnsureCreated();
         }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-9IJ2H0K;Database=TestTaskDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;");
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            /*
             var userRole = new Role { RoleId = 1, Description = "admin", Name = "admin" };
             var adminUser = new User
             {
@@ -46,15 +52,10 @@ namespace TestTaskWaveAccess.Models
                 ReleaseYear = 1997,
                 NumVotes = 2022020
             };
-            /*
-            modelBuilder.Entity<Role>().HasData(new Role[] { userRole });
-            modelBuilder.Entity<User>().HasData(new User[] { adminUser });
-            modelBuilder.Entity<Actor>().HasData(new Actor[] { actor });
-            modelBuilder.Entity<Movie>().HasData(new Movie[] { movie });
-            modelBuilder.Entity<Genre>().HasData(new Genre[] { genre });
             */
-            modelBuilder.Entity<Genre>().ToTable("Genres");
-
+            modelBuilder.Entity<Rating>()
+                .HasKey(p => new { p.MovieId, p.UserId });
+            
             base.OnModelCreating(modelBuilder);
         }
     }
