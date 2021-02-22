@@ -10,8 +10,8 @@ using TestTaskWaveAccess.Models;
 namespace TestTaskWaveAccess.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20210221203710_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20210222145324_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -76,10 +76,11 @@ namespace TestTaskWaveAccess.Migrations
                     b.Property<string>("Bio")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("BirthYear")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("FullName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ActorId");
@@ -98,6 +99,7 @@ namespace TestTaskWaveAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("GenreId");

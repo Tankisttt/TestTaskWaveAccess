@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace TestTaskWaveAccess.Models
 {
@@ -10,7 +12,8 @@ namespace TestTaskWaveAccess.Models
 		}
 
 		public int ActorId { get; set; }
-		public int BirthYear { get; set; }
+		public DateTime BirthDate { get; set; }
+		[Required]
 		public string FullName { get; set; }
 		public string Bio { get; set; }
 

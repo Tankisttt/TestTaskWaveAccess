@@ -1,8 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace TestTaskWaveAccess.Models
 {
@@ -28,34 +24,6 @@ namespace TestTaskWaveAccess.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            /*
-            var userRole = new Role { RoleId = 1, Description = "admin", Name = "admin" };
-            var adminUser = new User
-            {
-                UserId = 1, 
-                Bio = "sd",
-                BirthDate = DateTime.Now,
-                Email = @"roman@gmail.com",
-                IsBlocked = false,
-                Password = "1234", 
-                RegistrationDate = DateTime.Now,
-                UserName = "Roman322"
-            };
-            var actor = new Actor { ActorId = 0, Bio = "cool", BirthYear = 1950, FullName = "Charly" };
-            var genre = new Genre { GenreId = 1, Title = "Horror", Description = "horror genre of movies" };
-            var movie = new Movie
-            {
-                MovieId = 0,
-                Title = "Titanic",
-                Description = "It drowned",
-                AverageRating = 9.8f,
-                ReleaseYear = 1997,
-                NumVotes = 2022020
-            };
-            */
-            modelBuilder.Entity<Rating>()
-                .HasKey(p => new { p.MovieId, p.UserId });
-            
             base.OnModelCreating(modelBuilder);
         }
     }

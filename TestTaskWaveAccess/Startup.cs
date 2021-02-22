@@ -29,7 +29,7 @@ namespace TestTaskWaveAccess
 			var connectionString = Configuration.GetConnectionString("MSSQLConnection");
 			
 			services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connectionString));
-			
+
 			services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
 				.AddCookie(options =>
 				{

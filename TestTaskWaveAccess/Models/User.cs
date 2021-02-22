@@ -23,6 +23,7 @@ namespace TestTaskWaveAccess.Models
 		[Required]
 		public string Password { get; set; }
 		public string Bio { get; set; }
+		[Required]
 		public bool IsBlocked { get; set; }
 
 		public virtual ICollection<Role> Roles { get; set; }

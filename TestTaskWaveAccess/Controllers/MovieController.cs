@@ -1,21 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using TestTaskWaveAccess.Models;
 
 namespace TestTaskWaveAccess.Controllers
 {
 	public class MovieController : Controller
 	{
-		public MovieController()
+		readonly ApplicationContext _db;
+		public MovieController(ApplicationContext context)
 		{
+			_db = context;
 		}
 
 		public IActionResult Index()
 		{
-			return View();
+			return View(_db.Movies.ToList());
 		}
 	}
 }
