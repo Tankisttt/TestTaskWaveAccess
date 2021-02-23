@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace TestTaskWaveAccess.Models
@@ -19,8 +20,11 @@ namespace TestTaskWaveAccess.Models
 		[Required]
 		public DateTime RegistrationDate { get; set; }
 		[Required]
+		[DataType(DataType.EmailAddress)]
 		public string Email { get; set; }
 		[Required]
+		[Compare("Password", ErrorMessage = "Incorrect Email or Password")]
+		[DataType(DataType.Password)]
 		public string Password { get; set; }
 		public string Bio { get; set; }
 		[Required]

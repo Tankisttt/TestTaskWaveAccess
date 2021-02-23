@@ -1,5 +1,5 @@
 ﻿@using TestTaskWaveAccess.Models
-@model IEnumerable<Actor>
+@model IndexViewModel
 @{
     ViewData["Title"] = "Actors";
 }
@@ -10,15 +10,22 @@
     <table class="table">
         <tr>
             <th>Id</th>
-            <th>Birth year</th>
+            <th>Birth Date</th>
             <th>Full name</th>
             <th>Bio</th>
         </tr>
-
-
-
+        @foreach (Actor actor in Model.Actors)
+        {
+            <tr>
+                <td>@actor.ActorId</td>
+                <td>@actor.BirthDate</td>
+                <td>@actor.FullName</td>
+                <td>@actor.Bio</td>
+            </tr>
+        }
     </table>
 </div>
+
 
 <!--
 <style>
