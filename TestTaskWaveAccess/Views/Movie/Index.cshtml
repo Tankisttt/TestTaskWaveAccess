@@ -6,7 +6,7 @@
     ViewData["Title"] = "Movies";
 }
 <link href="~/Content/PagedList.css" rel="stylesheet" />  
-<link rel="stylesheet" href="~/css/Pages.css" />
+<link href="~/css/Pages.css" rel="stylesheet" />
 
 
 <div class="text-center">
@@ -29,12 +29,14 @@
             </th>
             <th>
                 Description
-            </th>>
+            </th>
             <th>
                 <a asp-action="Index" asp-route-sortOrder="@ViewBag.AverageRatingSort">
                     Average Rating
                 </a>
-            </th>>
+            </th>
+            <th>
+            </th>
         </tr>
         @foreach (Movie movie in Model)
         {
@@ -44,12 +46,17 @@
                 <td>@movie.ReleaseYear</td>
                 <td>@movie.Description</td>
                 <td>@movie.AverageRating</td>
+                <td>
+                    @Html.ActionLink("Edit",    "Edit",    new { MovieId=movie.MovieId })
+                    @Html.ActionLink("Details", "Details", new { MovieId=movie.MovieId })
+                    @Html.ActionLink("Delete",  "Delete",  new { MovieId=movie.MovieId })
+                </td>
             </tr>
         }
 
     </table>
 </div>
 
-<br />
-Page @(Model.PageCount < @Model.PageNumber ? 0 : @Model.PageNumber of @Model.PageCount
-@X.PagedList.Mvc.Core.HtmlHelper.PagedListPager(Html, Model, page => Url.Action("Index", new { page }))
+<br/>
+Page @(Model.PageCount < @Model.PageNumber ? 0 : @Model.PageNumber) of @Model.PageCount
+@X.PagedList.Mvc.Core.HtmlHelper.PagedListPager(Html, Model, page => Url.Action("Index", new { sortOrder = ViewBag.CurrentSort, page }))

@@ -12,9 +12,12 @@ namespace TestTaskWaveAccess.Models
 		}
 
 		public int ActorId { get; set; }
+		[Display(Name = "Birth date")]
 		public DateTime BirthDate { get; set; }
 		[Required]
+		[Display(Name = "Full name")]
 		public string FullName { get; set; }
+		[Display(Name = "Biography")]
 		public string Bio { get; set; }
 
 		public virtual ICollection<Movie> Movies { get; set; }

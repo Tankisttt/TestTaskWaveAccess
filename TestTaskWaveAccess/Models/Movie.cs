@@ -13,11 +13,16 @@ namespace TestTaskWaveAccess.Models
 		}
 
 		public int MovieId { get; set; }
+		[Display(Name = "Movie release year")]
 		public int ReleaseYear { get; set; }
 		[Required]
+		[Display(Name = "Movie title")]
 		public string Title { get; set; }
+		[Display(Name = "Description")]
 		public string Description { get; set; }
+		[Display(Name = "Movie average rating")]
 		public float AverageRating { get; set; }
+		[Display(Name = "Num of votes")]
 		public int NumVotes { get; set; }
 
 		public virtual ICollection<Actor> Actors { get; set; }

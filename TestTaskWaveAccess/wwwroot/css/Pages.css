@@ -22,10 +22,18 @@ li {
         text-decoration: none;
     }
 
-        li a:hover:not(.active) {
-            background-color: #4CAF50;
-        }
+    li span {
+        display: block;
+        color: Black;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+
+    li a:hover:not(.active) {
+        background-color: #1E90FF;
+    }
 
 .active {
-    background-color: #4CAF50;
+    background-color: #1E90FF;
 }

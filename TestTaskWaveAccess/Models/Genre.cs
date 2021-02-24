@@ -12,7 +12,9 @@ namespace TestTaskWaveAccess.Models
 
 		public int GenreId { get; set; }
 		[Required]
+		[Display(Name = "Title")]
 		public string Title { get; set; }
+		[Display(Name = "Title description")]
 		public string Description { get; set; }
 
 		public virtual ICollection<Movie> Movies { get; set; }
