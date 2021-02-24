@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Threading.Tasks;
 using TestTaskWaveAccess.Models;
 using X.PagedList;
 
@@ -13,6 +16,20 @@ namespace TestTaskWaveAccess.Controllers
 		{
 			_db = context;
 		}
+        public async Task<IActionResult> Details(int? actorId)
+        {
+            if (actorId == null)
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+
+            var actor = await _db.Actors
+                                .Include(x => x.Movies)
+                                .FirstOrDefaultAsync(m => m.ActorId == actorId);
+
+            if (actor == null)
+                return new StatusCodeResult(StatusCodes.Status404NotFound);
+
+            return View(actor);
+        }
 
         public ActionResult Index(SortStateActor sortOrder = SortStateActor.FullNameAsc, int page = 1)
         {

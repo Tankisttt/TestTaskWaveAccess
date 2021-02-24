@@ -71,7 +71,6 @@ namespace TestTaskWaveAccess.Controllers
             return View(movie);
         }
 
-
         public ActionResult Index(SortStateMovie sortOrder = SortStateMovie.TitleAsc, int page = 1)
         {
             const int pageSize = 10;

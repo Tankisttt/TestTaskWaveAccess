@@ -17,6 +17,7 @@
             <th><a asp-action="Index" asp-route-sortOrder="@ViewBag.BirthDateSort">Birth Date</a></th>
             <th><a asp-action="Index" asp-route-sortOrder="@ViewBag.FullNameSort">Full Name</a></th>
             <th>Biography</th>
+            <th>
         </tr/>
         @foreach (Actor actor in Model)
         {
@@ -25,6 +26,11 @@
                 <td>@actor.BirthDate</td>
                 <td>@actor.FullName</td>
                 <td>@actor.Bio</td>
+                <td>
+                    @Html.ActionLink("Edit",    "Edit",    new { actorId=actor.ActorId })
+                    @Html.ActionLink("Details", "Details", new { actorId=actor.ActorId })
+                    @Html.ActionLink("Delete",  "Delete",  new { actorId=actor.ActorId })
+                </td>
             </tr>
         }
     </table>

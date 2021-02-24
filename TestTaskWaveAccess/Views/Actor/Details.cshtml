@@ -1,0 +1,21 @@
+﻿@model Actor;
+
+<dl>
+    <dt>@Html.DisplayNameFor(model => model.FullName) </dt>
+    <dd>@Html.DisplayFor(model => model.FullName)</dd>
+
+
+    <dt>@Html.DisplayNameFor(model => model.BirthDate) </dt>
+    <dd>@Html.DisplayFor(model => model.BirthDate)</dd>
+
+    <dt>@Html.DisplayNameFor(model => model.Bio) </dt>
+    <dd>@Html.DisplayFor(model => model.Bio)</dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.Movies)
+    </dt>
+    @foreach(var movie in Model.Movies)
+    {
+        <dd>@movie.Title</dd>
+    }
+</dl>
