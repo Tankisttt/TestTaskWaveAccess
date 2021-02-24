@@ -47,9 +47,9 @@
                 <td>@movie.Description</td>
                 <td>@movie.AverageRating</td>
                 <td>
-                    @Html.ActionLink("Edit",    "Edit",    new { MovieId=movie.MovieId })
-                    @Html.ActionLink("Details", "Details", new { MovieId=movie.MovieId })
-                    @Html.ActionLink("Delete",  "Delete",  new { MovieId=movie.MovieId })
+                    @Html.ActionLink("Edit",    "Edit",    new { movieId=movie.MovieId })
+                    @Html.ActionLink("Details", "Details", new { movieId=movie.MovieId })
+                    @Html.ActionLink("Delete",  "Delete",  new { movieId=movie.MovieId })
                 </td>
             </tr>
         }

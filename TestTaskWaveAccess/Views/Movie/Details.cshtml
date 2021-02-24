@@ -16,4 +16,8 @@
     <dt>
         @Html.DisplayNameFor(model => model.Genres)
     </dt>
+    @foreach(var genre in Model.Genres)
+    {
+        <dd>@genre.Title</dd>
+    }
 </dl>

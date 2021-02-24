@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Data;
 using System.Linq;
 using System.Net;
@@ -38,12 +39,38 @@ namespace TestTaskWaveAccess.Controllers
             
             return RedirectToAction("Index");
         }
-        public ActionResult Details(int? movieId)
+        [HttpGet]
+        [ActionName("Delete")]
+        public async Task<IActionResult> ConfirmDelete(int? movieId)
+        {
+            if (movieId != null)
+            {
+                var movie = await _db.Movies.FirstOrDefaultAsync(p => p.MovieId == movieId);
+                if (movie != null)
+                    return View(movie);
+            }
+            return NotFound();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Delete(int? movieId)
+        {
+            if (movieId != null)
+            {
+                var movie = new Movie { MovieId = movieId.Value };
+                _db.Entry(movie).State = EntityState.Deleted;
+                await _db.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            return NotFound();
+        }
+        public async Task<IActionResult> Details(int? movieId)
         {
             if (movieId == null)
                 return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             
-            var movie = _db.Movies.Find(movieId);
+            var movie = await _db.Movies
+                                .Include(x => x.Genres)
+                                .FirstOrDefaultAsync(m => m.MovieId == movieId);
             
             if (movie == null)
                 return new StatusCodeResult(StatusCodes.Status404NotFound); 
@@ -76,6 +103,13 @@ namespace TestTaskWaveAccess.Controllers
             };
             
             return View(await source.ToPagedListAsync<Movie>(page, pageSize));
+        }
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+                _db.Dispose();
+            
+            base.Dispose(disposing);
         }
     }
 }
