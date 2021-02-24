@@ -39,29 +39,24 @@ namespace TestTaskWaveAccess.Controllers
             
             return RedirectToAction("Index");
         }
-        [HttpGet]
-        [ActionName("Delete")]
-        public async Task<IActionResult> ConfirmDelete(int? movieId)
+        public ActionResult Delete()
         {
-            if (movieId != null)
-            {
-                var movie = await _db.Movies.FirstOrDefaultAsync(p => p.MovieId == movieId);
-                if (movie != null)
-                    return View(movie);
-            }
-            return NotFound();
+            return View();
         }
+
         [HttpPost]
-        public async Task<IActionResult> Delete(int? movieId)
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int MovieId)
         {
-            if (movieId != null)
+            var data = _db.Movies.FirstOrDefault(x => x.MovieId == MovieId);
+            if (data != null)
             {
-                var movie = new Movie { MovieId = movieId.Value };
-                _db.Entry(movie).State = EntityState.Deleted;
-                await _db.SaveChangesAsync();
+                _db.Movies.Remove(data);
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return NotFound();
+            else
+                return View();
         }
         public async Task<IActionResult> Details(int? movieId)
         {
@@ -103,13 +98,6 @@ namespace TestTaskWaveAccess.Controllers
             };
             
             return View(await source.ToPagedListAsync<Movie>(page, pageSize));
-        }
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-                _db.Dispose();
-            
-            base.Dispose(disposing);
         }
     }
 }
