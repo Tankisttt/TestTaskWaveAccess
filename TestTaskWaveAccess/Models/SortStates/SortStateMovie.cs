@@ -1,4 +1,4 @@
-﻿public enum SortState
+﻿public enum SortStateMovie
 {
     ReleaseYearAsc,
     ReleaseYearDesc,

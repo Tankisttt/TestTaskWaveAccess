@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Data;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using TestTaskWaveAccess.Models;
 using X.PagedList;
@@ -74,30 +72,30 @@ namespace TestTaskWaveAccess.Controllers
         }
 
 
-        public async Task<IActionResult> Index(SortState sortOrder = SortState.TitleAsc, int page = 1)
+        public ActionResult Index(SortStateMovie sortOrder = SortStateMovie.TitleAsc, int page = 1)
         {
             const int pageSize = 10;
             ViewBag.CurrentSort = sortOrder;
             
-            ViewData["ReleaseYearSort"]     = sortOrder == SortState.ReleaseYearAsc ? SortState.ReleaseYearDesc : SortState.ReleaseYearAsc;
-            ViewData["TitleSort"]           = sortOrder == SortState.TitleAsc ? SortState.TitleDesc : SortState.TitleAsc;
-            ViewData["AverageRatingSort"]   = sortOrder == SortState.AverageRatingAsc ? SortState.AverageRatingDesc : SortState.AverageRatingAsc;
-            ViewData["NumVotesSort"]        = sortOrder == SortState.NumVotesAsc ? SortState.NumVotesDesc : SortState.NumVotesAsc;
+            ViewData["ReleaseYearSort"]   = sortOrder == SortStateMovie.ReleaseYearAsc ? SortStateMovie.ReleaseYearDesc : SortStateMovie.ReleaseYearAsc;
+            ViewData["TitleSort"]         = sortOrder == SortStateMovie.TitleAsc ? SortStateMovie.TitleDesc : SortStateMovie.TitleAsc;
+            ViewData["AverageRatingSort"] = sortOrder == SortStateMovie.AverageRatingAsc ? SortStateMovie.AverageRatingDesc : SortStateMovie.AverageRatingAsc;
+            ViewData["NumVotesSort"]      = sortOrder == SortStateMovie.NumVotesAsc ? SortStateMovie.NumVotesDesc : SortStateMovie.NumVotesAsc;
 
             IQueryable<Movie> source = ViewBag.CurrentSort switch
             {
-                SortState.ReleaseYearAsc    => _db.Movies.OrderBy(s => s.ReleaseYear),
-                SortState.ReleaseYearDesc   => _db.Movies.OrderByDescending(s => s.ReleaseYear),
-                SortState.TitleAsc          => _db.Movies.OrderBy(s => s.Title),
-                SortState.TitleDesc         => _db.Movies.OrderByDescending(s => s.Title),
-                SortState.AverageRatingAsc  => _db.Movies.OrderBy(s => s.AverageRating),
-                SortState.AverageRatingDesc => _db.Movies.OrderByDescending(s => s.AverageRating),
-                SortState.NumVotesAsc       => _db.Movies.OrderBy(s => s.NumVotes),
-                SortState.NumVotesDesc      => _db.Movies.OrderByDescending(s => s.NumVotes),
+                SortStateMovie.ReleaseYearAsc    => _db.Movies.OrderBy(s => s.ReleaseYear),
+                SortStateMovie.ReleaseYearDesc   => _db.Movies.OrderByDescending(s => s.ReleaseYear),
+                SortStateMovie.TitleAsc          => _db.Movies.OrderBy(s => s.Title),
+                SortStateMovie.TitleDesc         => _db.Movies.OrderByDescending(s => s.Title),
+                SortStateMovie.AverageRatingAsc  => _db.Movies.OrderBy(s => s.AverageRating),
+                SortStateMovie.AverageRatingDesc => _db.Movies.OrderByDescending(s => s.AverageRating),
+                SortStateMovie.NumVotesAsc       => _db.Movies.OrderBy(s => s.NumVotes),
+                SortStateMovie.NumVotesDesc      => _db.Movies.OrderByDescending(s => s.NumVotes),
                 _ => _db.Movies.OrderBy(s => s.Title),
             };
             
-            return View(await source.ToPagedListAsync<Movie>(page, pageSize));
+            return View(source.ToPagedList(page, pageSize));
         }
     }
 }

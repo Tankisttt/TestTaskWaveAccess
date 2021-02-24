@@ -1,20 +1,24 @@
 ﻿@using TestTaskWaveAccess.Models
-@model IndexViewModel
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+@model IPagedList<Actor>
 @{
     ViewData["Title"] = "Actors";
 }
+<link href="~/Content/PagedList.css" rel="stylesheet" />  
+<link href="~/css/Pages.css" rel="stylesheet" />
 
 <div class="text-center">
     <h1 class="display-4">Actors</h1>
 
     <table class="table">
         <tr>
-            <th>Id</th>
-            <th>Birth Date</th>
-            <th>Full name</th>
-            <th>Bio</th>
-        </tr>
-        @foreach (Actor actor in Model.Actors)
+            <th>Actor Id</th>
+            <th><a asp-action="Index" asp-route-sortOrder="@ViewBag.BirthDateSort">Birth Date</a></th>
+            <th><a asp-action="Index" asp-route-sortOrder="@ViewBag.FullNameSort">Full Name</a></th>
+            <th>Biography</th>
+        </tr/>
+        @foreach (Actor actor in Model)
         {
             <tr>
                 <td>@actor.ActorId</td>
@@ -26,11 +30,6 @@
     </table>
 </div>
 
-
-<!--
-<style>
-    tr:nth-of-type(odd) {
-        background-color: #ccc;
-    }
-</style>
--->
+<br/>
+Page @(Model.PageCount < @Model.PageNumber ? 0 : @Model.PageNumber) of @Model.PageCount
+@X.PagedList.Mvc.Core.HtmlHelper.PagedListPager(Html, Model, page => Url.Action("Index", new { sortOrder = ViewBag.CurrentSort, page }))

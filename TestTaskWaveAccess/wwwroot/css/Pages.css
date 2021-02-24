@@ -37,3 +37,7 @@ li {
 .active {
     background-color: #1E90FF;
 }
+
+tr:nth-of-type(odd) {
+    background-color: #ccc;
+}

@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using TestTaskWaveAccess.Models;
+using X.PagedList;
 
 namespace TestTaskWaveAccess.Controllers
 {
@@ -16,11 +14,24 @@ namespace TestTaskWaveAccess.Controllers
 			_db = context;
 		}
 
-        public async Task<IActionResult> Index(int page = 1)
+        public ActionResult Index(SortStateActor sortOrder = SortStateActor.FullNameAsc, int page = 1)
         {
+            const int pageSize = 10;
+            ViewBag.CurrentSort = sortOrder;
 
-            IQueryable<Actor> source = _db.Actors;
-            return View(source);
+            ViewData["BirthDateSort"] = sortOrder == SortStateActor.BirthDateAsc ? SortStateActor.BirthDateDesc : SortStateActor.BirthDateAsc;
+            ViewData["FullNameSort"] = sortOrder == SortStateActor.FullNameAsc ? SortStateActor.FullNameDesc : SortStateActor.FullNameAsc;
+
+            IQueryable<Actor> source = ViewBag.CurrentSort switch
+            {
+                SortStateActor.BirthDateAsc => _db.Actors.OrderBy(s => s.BirthDate),
+                SortStateActor.BirthDateDesc => _db.Actors.OrderByDescending(s => s.BirthDate),
+                SortStateActor.FullNameAsc => _db.Actors.OrderBy(s => s.FullName),
+                SortStateActor.FullNameDesc => _db.Actors.OrderByDescending(s => s.FullName),
+                _ => _db.Actors.OrderBy(s => s.FullName),
+            };
+
+            return View(source.ToPagedList(page, pageSize));
         }
     }
 }
