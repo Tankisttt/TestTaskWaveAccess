@@ -16,6 +16,7 @@ namespace TestTaskWaveAccess.Controllers
 		{
 			_db = context;
 		}
+        #region CRUD
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -44,22 +45,50 @@ namespace TestTaskWaveAccess.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int MovieId)
+        public ActionResult Delete(int? MovieId)
         {
-            var data = _db.Movies.FirstOrDefault(x => x.MovieId == MovieId);
-            if (data != null)
+            if (MovieId == null)
+                return new StatusCodeResult(StatusCodes.Status400BadRequest);
+
+            var movie = _db.Movies.FirstOrDefault(x => x.MovieId == MovieId);
+            if (movie != null)
             {
-                _db.Movies.Remove(data);
+                _db.Entry(movie).State = EntityState.Deleted;
                 _db.SaveChanges();
                 return RedirectToAction("Index");
             }
             else
                 return View();
         }
+
+        public ActionResult Edit(int? MovieId)
+        {
+            if (MovieId == null)
+                return new StatusCodeResult(StatusCodes.Status400BadRequest);
+            
+            var movieToEdit = _db.Movies.Find(MovieId);
+            if (movieToEdit == null)
+                return new StatusCodeResult(StatusCodes.Status404NotFound);
+
+            return View(movieToEdit);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(Movie movie)
+        {
+            if (ModelState.IsValid)
+            {
+                _db.Entry(movie).State = EntityState.Modified;
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(movie);
+        }
+        #endregion
         public async Task<IActionResult> Details(int? movieId)
         {
             if (movieId == null)
-                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+                return new StatusCodeResult(StatusCodes.Status400BadRequest);
             
             var movie = await _db.Movies
                                 .Include(x => x.Genres)

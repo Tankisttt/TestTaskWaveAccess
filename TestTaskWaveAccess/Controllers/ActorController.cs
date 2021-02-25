@@ -16,6 +16,50 @@ namespace TestTaskWaveAccess.Controllers
 		{
 			_db = context;
 		}
+        #region CRUD
+        public ActionResult Delete()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int ActorId)
+        {
+            var actor = _db.Actors.FirstOrDefault(x => x.ActorId == ActorId);
+            if (actor != null)
+            {
+                _db.Actors.Remove(actor);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            else
+                return View();
+        }
+        public ActionResult Edit(int? ActorId)
+        {
+            if (ActorId == null)
+                return new StatusCodeResult(StatusCodes.Status400BadRequest);
+
+            var actorToEdit = _db.Actors.Find(ActorId);
+            if (actorToEdit == null)
+                return new StatusCodeResult(StatusCodes.Status404NotFound);
+
+            return View(actorToEdit);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(Actor actor)
+        {
+            if (ModelState.IsValid)
+            {
+                _db.Entry(actor).State = EntityState.Modified;
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(actor);
+        }
+        #endregion
         public async Task<IActionResult> Details(int? actorId)
         {
             if (actorId == null)
