@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using MvcMovie.Models;
+using System;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
@@ -102,7 +105,11 @@ namespace TestTaskWaveAccess.Controllers
 
             return View(movie);
         }
-        public ActionResult Index(string searchStringActor, SortStateMovie sortOrder = SortStateMovie.TitleAsc, int page = 1)
+        //Fat controller!!!
+        public ActionResult Index( string movieGenre,
+                                   string searchStringActor,
+                                   SortStateMovie sortOrder = SortStateMovie.TitleAsc,
+                                   int page = 1)
         {
             IQueryable<Movie> movies = _db.Movies;
             const int pageSize = 10;
@@ -113,9 +120,13 @@ namespace TestTaskWaveAccess.Controllers
             ViewData["AverageRatingSort"] = sortOrder == SortStateMovie.AverageRatingAsc ? SortStateMovie.AverageRatingDesc : SortStateMovie.AverageRatingAsc;
             ViewData["NumVotesSort"]      = sortOrder == SortStateMovie.NumVotesAsc ? SortStateMovie.NumVotesDesc : SortStateMovie.NumVotesAsc;
             ViewData["CurrentActorFilter"] = searchStringActor;
+            ViewData["CurrentGenreFilter"] = searchStringActor;
 
-            if (!System.String.IsNullOrEmpty(searchStringActor))
-                movies = _db.Movies.Where(m => m.Actors.Any(a => a.FullName.Contains(searchStringActor)));
+            if (!String.IsNullOrEmpty(searchStringActor))
+                movies = movies.Where(m => m.Actors.Any(a => a.FullName.Contains(searchStringActor)));
+
+            if (!String.IsNullOrEmpty(movieGenre))
+                movies = movies.Where(m => m.Genres.Any(a => a.Title.Contains(movieGenre)));
 
             movies = ViewBag.CurrentSort switch
             {
@@ -129,8 +140,13 @@ namespace TestTaskWaveAccess.Controllers
                 SortStateMovie.NumVotesDesc      => movies.OrderByDescending(s => s.NumVotes),
                 _ => _db.Movies.OrderBy(s => s.Title),
             };
-            
-            return View(movies.ToPagedList(page, pageSize));
+
+            var movieGenreVM = new MovieGenreViewModel
+            {
+                Genres = new SelectList(_db.Genres.Distinct().Select(x => x.Title).ToList()),
+                Movies = movies.ToPagedList(page, pageSize)
+            };
+            return View(movieGenreVM);
         }
     }
 }

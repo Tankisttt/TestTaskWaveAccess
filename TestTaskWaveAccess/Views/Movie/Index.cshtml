@@ -1,7 +1,7 @@
 ﻿@using TestTaskWaveAccess.Models
 @using X.PagedList
 @using X.PagedList.Mvc.Core
-@model IPagedList<Movie>
+@model MvcMovie.Models.MovieGenreViewModel
 @{
     ViewData["Title"] = "Movies";
 }
@@ -15,6 +15,10 @@
 <form asp-action="Index" method="get">
     <div class="form-actions no-color">
         <p>
+            <select asp-for="MovieGenre" asp-items="Model.Genres">
+                <option value="">All</option>
+            </select>
+
             Find by Actor: <input type="text" name="searchStringActor" value="@ViewData["CurrentActorFilter"]" />
             <input type="submit" value="Search" class="btn btn-default" /> |
             <a asp-action="Index">Back to Full List</a>
@@ -51,7 +55,7 @@
             <th>
             </th>
         </tr>
-        @foreach (Movie movie in Model)
+        @foreach (Movie movie in Model.Movies)
         {
             <tr>
                 <td>@movie.MovieId</td>
@@ -71,5 +75,11 @@
 </div>
 
 <br/>
-Page @(Model.PageCount < @Model.PageNumber ? 0 : @Model.PageNumber) of @Model.PageCount
-@X.PagedList.Mvc.Core.HtmlHelper.PagedListPager(Html, Model, page => Url.Action("Index", new { sortOrder = ViewBag.CurrentSort, page }))
+Page @(Model.Movies.PageCount < @Model.Movies.PageNumber ? 0 : @Model.Movies.PageNumber) of @Model.Movies.PageCount
+@X.PagedList.Mvc.Core.HtmlHelper.PagedListPager(Html, Model.Movies, page => Url.Action("Index",
+new
+{
+    sortOrder = ViewBag.CurrentSort,
+    page,
+    searchStringActor = ViewData["CurrentActorFilter"]
+}))
