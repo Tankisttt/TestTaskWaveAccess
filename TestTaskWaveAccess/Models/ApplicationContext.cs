@@ -14,6 +14,7 @@ namespace TestTaskWaveAccess.Models
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             : base(options)
         {
+            ChangeTracker.LazyLoadingEnabled = false;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

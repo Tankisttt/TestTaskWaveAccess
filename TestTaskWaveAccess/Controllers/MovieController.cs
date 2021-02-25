@@ -102,9 +102,9 @@ namespace TestTaskWaveAccess.Controllers
 
             return View(movie);
         }
-
-        public ActionResult Index(SortStateMovie sortOrder = SortStateMovie.TitleAsc, int page = 1)
+        public ActionResult Index(string searchStringActor, SortStateMovie sortOrder = SortStateMovie.TitleAsc, int page = 1)
         {
+            IQueryable<Movie> movies = _db.Movies;
             const int pageSize = 10;
             ViewBag.CurrentSort = sortOrder;
             
@@ -112,21 +112,25 @@ namespace TestTaskWaveAccess.Controllers
             ViewData["TitleSort"]         = sortOrder == SortStateMovie.TitleAsc ? SortStateMovie.TitleDesc : SortStateMovie.TitleAsc;
             ViewData["AverageRatingSort"] = sortOrder == SortStateMovie.AverageRatingAsc ? SortStateMovie.AverageRatingDesc : SortStateMovie.AverageRatingAsc;
             ViewData["NumVotesSort"]      = sortOrder == SortStateMovie.NumVotesAsc ? SortStateMovie.NumVotesDesc : SortStateMovie.NumVotesAsc;
+            ViewData["CurrentActorFilter"] = searchStringActor;
 
-            IQueryable<Movie> source = ViewBag.CurrentSort switch
+            if (!System.String.IsNullOrEmpty(searchStringActor))
+                movies = _db.Movies.Where(m => m.Actors.Any(a => a.FullName.Contains(searchStringActor)));
+
+            movies = ViewBag.CurrentSort switch
             {
-                SortStateMovie.ReleaseYearAsc    => _db.Movies.OrderBy(s => s.ReleaseYear),
-                SortStateMovie.ReleaseYearDesc   => _db.Movies.OrderByDescending(s => s.ReleaseYear),
-                SortStateMovie.TitleAsc          => _db.Movies.OrderBy(s => s.Title),
-                SortStateMovie.TitleDesc         => _db.Movies.OrderByDescending(s => s.Title),
-                SortStateMovie.AverageRatingAsc  => _db.Movies.OrderBy(s => s.AverageRating),
-                SortStateMovie.AverageRatingDesc => _db.Movies.OrderByDescending(s => s.AverageRating),
-                SortStateMovie.NumVotesAsc       => _db.Movies.OrderBy(s => s.NumVotes),
-                SortStateMovie.NumVotesDesc      => _db.Movies.OrderByDescending(s => s.NumVotes),
+                SortStateMovie.ReleaseYearAsc    => movies.OrderBy(s => s.ReleaseYear),
+                SortStateMovie.ReleaseYearDesc   => movies.OrderByDescending(s => s.ReleaseYear),
+                SortStateMovie.TitleAsc          => movies.OrderBy(s => s.Title),
+                SortStateMovie.TitleDesc         => movies.OrderByDescending(s => s.Title),
+                SortStateMovie.AverageRatingAsc  => movies.OrderBy(s => s.AverageRating),
+                SortStateMovie.AverageRatingDesc => movies.OrderByDescending(s => s.AverageRating),
+                SortStateMovie.NumVotesAsc       => movies.OrderBy(s => s.NumVotes),
+                SortStateMovie.NumVotesDesc      => movies.OrderByDescending(s => s.NumVotes),
                 _ => _db.Movies.OrderBy(s => s.Title),
             };
             
-            return View(source.ToPagedList(page, pageSize));
+            return View(movies.ToPagedList(page, pageSize));
         }
     }
 }
