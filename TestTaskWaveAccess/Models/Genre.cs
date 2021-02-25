@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TestTaskWaveAccess.Models
 {
@@ -9,7 +10,8 @@ namespace TestTaskWaveAccess.Models
 		{
 			Movies = new HashSet<Movie>();
 		}
-
+		[ScaffoldColumn(false)]
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int GenreId { get; set; }
 		[Required]
 		[Display(Name = "Title")]

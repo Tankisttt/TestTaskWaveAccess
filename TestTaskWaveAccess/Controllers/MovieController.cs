@@ -17,13 +17,16 @@ namespace TestTaskWaveAccess.Controllers
 			_db = context;
 		}
         #region CRUD
-
+        public ActionResult Create()
+        {
+            return View();
+        }
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult Create(Movie movie)
         {
             try
             {
+                ModelState.Remove("MovieId");
                 if (ModelState.IsValid)
                 {
                     _db.Movies.Add(movie);

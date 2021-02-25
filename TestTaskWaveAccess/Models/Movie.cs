@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TestTaskWaveAccess.Models
 {
@@ -11,9 +12,11 @@ namespace TestTaskWaveAccess.Models
 			Genres = new HashSet<Genre>();
 			Ratings = new HashSet<Rating>();
 		}
-
+		[ScaffoldColumn(false)]
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int MovieId { get; set; }
 		[Display(Name = "Movie release year")]
+		[Range(1700, 2100)]
 		public int ReleaseYear { get; set; }
 		[Required]
 		[Display(Name = "Movie title")]
@@ -21,8 +24,10 @@ namespace TestTaskWaveAccess.Models
 		[Display(Name = "Description")]
 		public string Description { get; set; }
 		[Display(Name = "Movie average rating")]
+		[Range(0, 10)]
 		public float AverageRating { get; set; }
 		[Display(Name = "Num of votes")]
+		[Range(0, int.MaxValue, ErrorMessage = "Only positive number allowed")]
 		public int NumVotes { get; set; }
 
 		public virtual ICollection<Actor> Actors { get; set; }

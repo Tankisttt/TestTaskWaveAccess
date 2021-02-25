@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using TestTaskWaveAccess.Models;
@@ -17,6 +18,31 @@ namespace TestTaskWaveAccess.Controllers
 			_db = context;
 		}
         #region CRUD
+        public ActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Create(Actor actor)
+        {
+            try
+            {
+                ModelState.Remove("ActorId");
+                if (ModelState.IsValid)
+                {
+                    _db.Actors.Add(actor);
+                    _db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (DataException dataException)
+            {
+                ModelState.AddModelError(dataException.Message, "Unable to save changes. Try again or Contact to the Administrator");
+            }
+
+            return RedirectToAction("Index");
+        }
+
         public ActionResult Delete()
         {
             return View();

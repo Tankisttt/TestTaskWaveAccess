@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TestTaskWaveAccess.Models
 {
@@ -9,7 +10,8 @@ namespace TestTaskWaveAccess.Models
 		{
 			Users = new HashSet<User>();
 		}
-
+		[ScaffoldColumn(false)]
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int RoleId { get; set; }
 		[Required]
 		public string Name { get; set; }
